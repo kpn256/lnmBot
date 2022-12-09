@@ -258,35 +258,39 @@ class Trading(User):
                 f"leverage: {leverage}")
         return p_info
 
-    def price_btc(self):
+    def price_index(self):
 
         index_price = self.lnm.futures_index_history({
             'limit': 2
         })
+        price_requests = json.loads(index_price)
+        price_index1 = price_requests[1]
+        index = price_index1["index"]
+        
+        return index
+    
+    def price_bid(self):
+
         bid_price = self.lnm.futures_bid_offer_history({
             'limit': 2
-        })
-        price_requests = json.loads(index_price)
+            })
+
         bidOffer = json.loads(bid_price)
-        price_index1 = price_requests[1]
         bid_offer1 = bidOffer[1]
-        index = price_index1["index"]
         bid = bid_offer1["bid"]
         offer = bid_offer1["offer"]
+        return bid 
 
-        return f"index:{str(index)} bid:{str(bid)} offer:{str(offer)}"
+    def price_offer(self):
+
+        bid_price = self.lnm.futures_bid_offer_history({
+            'limit': 2
+            })
+
+        bidOffer = json.loads(bid_price)
+        bid_offer1 = bidOffer[1]
+        offer = bid_offer1["offer"]
+        return  offer
+        
 
 
-user = Trading(
-                key="",
-                secret="",
-                passphrase="")
-
-# print(user1.key)
-# print(user.show_open_p())
-# print(user.show_running_p())
-# print(user1.long("m",500,50,""))
-# print(user1.long_tp_sl("m", 500, 30, 20000, 23000))
-# print(user1.priceBtc())
-# print(user1.price_btc())'''
-# print(user.show_open_p())

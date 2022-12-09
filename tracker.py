@@ -1,12 +1,7 @@
 
-
-
-
-
 import json
 from lnmarkets import rest
 import time
-
 
 
 key = ""
@@ -20,6 +15,7 @@ lnm.futures_get_ticker()
 
 
 def price_scrapper():
+
     while True:                                 
         indexP = lnm.futures_index_history({   
             'limit': 2
@@ -41,5 +37,5 @@ def price_scrapper():
         
         time.sleep(30)
              
-price_scrapper()             
+            
 
