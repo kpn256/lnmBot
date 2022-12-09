@@ -21,9 +21,9 @@ def bot():
     # esta clase tambien nos permite utilizar los metodos directamente de lnm Api
 
     user = tr.Trading(
-        key="zd94iud/QRT8wq7rfZD2CoP0rh2Jrx3t5hGFk844p9A=",
-        secret="NWPEOF2rEy9Bc168zG41rnvrIvsRF3hBu7gI52DCyvUP8cfY9bsIKqv6idOKXRZk0YDv00CD1VSJJ8B5nCXA5w==", 
-        passphrase="b49a1b08453hf")
+        key="",
+        secret="", 
+        passphrase="")
 
     # de la misma manera creamos el objeto analysis que tiene los metodos de tradingview_ta
     analysis = bitcoin.get_analysis()
