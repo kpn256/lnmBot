@@ -21,9 +21,9 @@ def bot():
     # esta clase tambien nos permite utilizar los metodos directamente de lnm Api
 
     user = tr.Trading(
-        key="jG8bOh1uhpkKGMNsUgDm4/8kJGLsbrGi6tvS6ggQc80=",
-        secret="xC+I2l6wfLMqxnTrQ/XVg5GYNosz2m0G0y5LFpsfvzB5p//ehxSOGWlcdihgxNf/LjrSDP1SEBa9m57VrXqtLw==", 
-        passphrase="cfd0jg24d2j")
+        key="",
+        secret="", 
+        passphrase="")
 
     # de la misma manera creamos el objeto analysis que tiene los metodos de tradingview_ta
     analysis = bitcoin.get_analysis()
@@ -82,7 +82,7 @@ def bot():
             short_sl = offer + offer_change_sl
 
             user.Short_tp_sl(margin=100, leverage=100, type="m", tp=short_tp, sl=short_sl)
-            
+
             print("short is running")
 
             time.sleep(900)
