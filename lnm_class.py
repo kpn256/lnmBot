@@ -52,26 +52,13 @@ class Trading(User):
         self.entryPrice = ""
 
     def long(self, type, margin, leverage, entry_price):
-
-        if type == "m":
-            peticion = self.lnm.futures_new_position({
-                'type': type,
-                'side': 'b',
-                'margin': margin,
-                'leverage': leverage,
+        peticion = self.lnm.futures_new_position({
+            'type': type,
+            'side': 'b',
+            'margin': margin,
+            'leverage': leverage,
             })
-            self.response(peticion)
-
-        elif type == 'l':
-
-            peticion = self.lnm.futures_new_position({
-                'type': type,
-                'side': 'b',
-                'margin': margin,
-                'leverage': leverage,
-                'price': entry_price,
-            })
-            self.response(peticion)
+        return self.response(peticion)
 
     def long_tp_sl(self, type, margin, leverage, sl, tp):
         peticion = self.lnm.futures_new_position({
@@ -106,26 +93,15 @@ class Trading(User):
         })
         self.response(peticion)
 
-    def Short(self, type, margin, leverage, entry_price):
-        if type == 'm':
-            peticion = self.lnm.futures_new_position({
-                    'type': type,
-                    'side': 's',
-                    'margin': margin,
-                    'leverage': leverage,
-                    })
-            self.response(peticion)
-
-        elif type == 'l':
-            entry_price = int(input("set the limit price: "))
-            peticion = self.lnm.futures_new_position({
-                    'type': type,
-                    'side': 's',
-                    'margin': margin,
-                    'leverage': leverage,
-                    'price': entry_price,
-                    })
-            self.response(peticion)
+    def Short(self, type, margin, leverage):
+        
+        peticion = self.lnm.futures_new_position({
+                'type': type,
+                'side': 's',
+                'margin': margin,
+                'leverage': leverage,
+                })
+        return self.response(peticion)
 
     def Short_tp_sl(self, type, margin, leverage, sl, tp):
 
@@ -138,7 +114,7 @@ class Trading(User):
                 'stoploss': int(sl),
                 'takeprofit': int(tp),
             })
-            self.response(peticion)
+            return self.response(peticion)
 
         elif (sl == isdigit) and (not tp == isdigit):
             self.peticion = self.lnm.futures_new_position({
@@ -239,7 +215,7 @@ class Trading(User):
         return string
 
     def response(self, peticion):
-
+        # crear un try exept por si la peticion falla
         info = json.loads(peticion)
         position_info = info["position"]
         pid = position_info["pid"]
@@ -256,7 +232,7 @@ class Trading(User):
                 f"stoploss: {stop_l}\n"
                 f"takeprofit: {take_p}"
                 f"leverage: {leverage}")
-        return p_info
+        return info
 
     def price_index(self):
 
