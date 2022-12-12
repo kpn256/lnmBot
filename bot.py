@@ -97,7 +97,8 @@ def bot():
 
             long_sl = offer - bid_change_sl
 
-            user.long_tp_sl(type="m", margin=1000, leverage=100, tp=long_tp, sl=long_sl)
+            user.long_tp_sl(type="m", margin=100, leverage=100, tp=long_tp, sl=long_sl)
+            print("long is running")
 
             time.sleep(900)
 

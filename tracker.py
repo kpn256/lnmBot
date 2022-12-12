@@ -36,6 +36,4 @@ def price_scrapper():
             dataPrice.close()  
         
         time.sleep(30)
-             
-            
 
