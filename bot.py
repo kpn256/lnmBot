@@ -1,37 +1,28 @@
 
-import lnm_class as tr  # acá traemos la clase Trading del modulo lnm_class
+import lnm_class as tr  
 import time
 import tradingview_ta 
 from tradingview_ta import TA_Handler, Interval, Exchange
 
 
 
+
 def bot():
 
-
-    bitcoin = TA_Handler(
-    symbol="XBTUSD",
-    screener="crypto",
-    exchange="BITMEX",
-    interval=Interval.INTERVAL_1_MINUTE,
-    )
-
-    # en esta line estoy creando el objeto user con todos los metodos de la clase Trading del lnm_class
-    # los parametros que necesita esta clase para funcionar es la apikey
-    # esta clase tambien nos permite utilizar los metodos directamente de lnm Api
-
-    user = tr.Trading(
-        key="",
-        secret="", 
+    user = tr.Trading(key="",
+        secret="",
         passphrase="")
 
-    # de la misma manera creamos el objeto analysis que tiene los metodos de tradingview_ta
-    analysis = bitcoin.get_analysis()
-    
-    while True: #creamos un bucle para que cada x tiempo pida los datos y revise si se cumplen las condiciones
+    bitcoin = TA_Handler(
+        symbol="XBTUSD",
+        screener="crypto",
+        exchange="BITMEX",
+        interval=Interval.INTERVAL_1_MINUTE,
+        )
 
+    while True:
 
-        # de esta manera obtenemos los datos que queremos de tradingview_ta, estos estan alojados en un diccionario 
+        analysis = bitcoin.get_analysis()
 
         rsi = analysis.indicators["RSI"]
     
@@ -41,20 +32,12 @@ def bot():
 
         ema20 = analysis.indicators["EMA20"]
 
-        # aca obtenemos el precio de lnm
-
-
         index = user.price_index()
 
         bid = user.price_bid()
 
         offer = user.price_offer()
-
         
-
-
-        # hago el print para verificar que me entrega los datos que quiero
-
         print(f"rsi: {rsi}")
         print(f"BB.lower: {bollinger_lower}")
         print(f"BB.upper: {bollinger_upper}")
@@ -63,17 +46,11 @@ def bot():
         print(f"bid: {bid}")
         print(f"offer: {offer}")
         
-        # print(f"tp: {tp}")
-        # print(f"sl: {sl}\n")
-        
-
         # aca ya empezariamos a montar la estrategia segun los datos que obtenemos 
 
-        if (rsi >= 70) and (offer >= ema20) or (index >= bollinger_upper):
+        if (rsi >= 70) and (bid >= ema20) and (index >= bollinger_upper):
 
-            # declarando estas variables calculo tp y sl ?¿
-
-            offer_change_tp = 0.03*offer
+            offer_change_tp = 0.02*offer
 
             offer_change_sl = 0.007*offer
 
@@ -87,7 +64,7 @@ def bot():
 
             time.sleep(900)
 
-        elif (rsi <= 30) and (bid >= ema20) or (index <= bollinger_lower):
+        elif (rsi <= 30) and (offer <= ema20) and (index <= bollinger_lower):
 
             bid_change_tp = 0.03*bid
 
@@ -102,6 +79,35 @@ def bot():
 
             time.sleep(900)
 
+        data = user.show_running_p()
+        running_positions = []
+        
+        for items in data:
+            sort_dict = {
+                    'pid': items['pid'],
+                    'type': items['type'],
+                    'liquidation': items['liquidation'],
+                    'stoploss': items['stoploss'],
+                    'price': items['price']
+                    }
+            running_positions.append(sort_dict)
+            
+            del sort_dict
+
+            if (items['side'] == 'b') and (items['pl'] > (items['margin']/2)):
+                change = items['stoploss'] + (items['price'] - items['liquidation'])
+                new_sl = bid + change
+                user.futures_update_position({
+                    'pid': items['pid'],
+                    'type': 'stoploss',
+                    'value': new_sl
+                    })
+                
+
+        print(running_positions)
         time.sleep(120)
-  
+        
     
+
+
+

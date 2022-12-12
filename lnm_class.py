@@ -2,7 +2,7 @@
 from curses.ascii import isdigit
 import json
 from lnmarkets import rest
-# from lnmarkets import websockets
+
 
 
 class User(rest.LNMarketsRest):
@@ -51,7 +51,7 @@ class Trading(User):
         self.leverage = 50
         self.entryPrice = ""
 
-    def long(self, type, margin, leverage, entry_price):
+    def long(self, type, margin, leverage):
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 'b',
@@ -194,12 +194,12 @@ class Trading(User):
                 'type': 'running'
                 })
         info_running = json.loads(running_p)
-        result = []
+        '''result = []
         counter = 0
         for i in info_running:
             position = []
             counter += 1
-            position.append(f"\nposicion {counter}")
+            position.append(f"posicion {counter}")
             position.append(f"pid: {i['pid']}")
             position.append(f"price: {i['price']}")
             position.append(f"margin: {i['margin']}")
@@ -210,9 +210,9 @@ class Trading(User):
         string = str(result)
         characters = "[]'"
         for x in range(len(characters)):
-            string = string.replace(characters[x], "")
+            string = string.replace(characters[x], "")'''
 
-        return string
+        return info_running
 
     def response(self, peticion):
         # crear un try exept por si la peticion falla
@@ -268,5 +268,7 @@ class Trading(User):
         offer = bid_offer1["offer"]
         return  offer
         
+
+
 
 
