@@ -104,37 +104,15 @@ class Trading(User):
         return self.response(peticion)
 
     def Short_tp_sl(self, type, margin, leverage, sl, tp):
-
-        if sl == isdigit and tp == isdigit:
-            peticion = self.lnm.futures_new_position({
-                'type': type,
-                'side': 's',
-                'margin': margin,
-                'leverage': leverage,
-                'stoploss': int(sl),
-                'takeprofit': int(tp),
+        peticion = self.lnm.futures_new_position({
+            'type': type,
+            'side': 's',
+            'margin': int(margin),
+            'leverage': int(leverage),
+            'stoploss': int(sl),
+            'takeprofit': int(tp),
             })
-            return self.response(peticion)
-
-        elif (sl == isdigit) and (not tp == isdigit):
-            self.peticion = self.lnm.futures_new_position({
-                'type': type,
-                'side': 's',
-                'margin': margin,
-                'leverage': leverage,
-                'stoploss': int(sl),
-            })
-            self.response(peticion)
-
-        elif (tp == isdigit) and (not sl == isdigit):
-            peticion = self.nm.futures_new_position({
-                'type': type,
-                'side': 's',
-                'margin': margin,
-                'leverage': leverage,
-                'takeprofit': int(tp),
-            })
-            self.response(peticion)
+        return peticion
 
     def close_run_p(self, pid ):
     
