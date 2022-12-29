@@ -193,7 +193,7 @@ class Trading(User):
         return info_running
 
     def response(self, peticion):
-        # crear un try exept por si la peticion falla
+        # crear un try exept por si la peticion falla PENDIENTE
         info = json.loads(peticion)
         position_info = info["position"]
         pid = position_info["pid"]

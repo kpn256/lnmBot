@@ -2,7 +2,7 @@
 import json
 from lnmarkets import rest
 import time
-
+from constants import options
 
 
 lnm = rest.LNMarketsRest(**options)
