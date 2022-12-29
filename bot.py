@@ -78,7 +78,7 @@ def bot():
             time.sleep(900)
 
         data = user.show_running_p()
-        print(data)
+        
         running_positions = []
 
         for items in data:
@@ -115,6 +115,6 @@ def bot():
                 print("stoploss was change")
                 
 
-        #print(running_positions)
-        #print(analysis.time) 
+        print(running_positions)
+        print(analysis.time) 
         time.sleep(120)
