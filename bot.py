@@ -79,9 +79,9 @@ def bot():
 
         data = user.show_running_p()
         print(data)
-        #running_positions = []
+        running_positions = []
 
-        '''for items in data:
+        for items in data:
             sort_dict = {
                     'pid': items['pid'],
                     'side': items['side'],
@@ -112,7 +112,7 @@ def bot():
                     'type': 'stoploss',
                     'value': new_sl
                     })
-                print("stoploss was change")'''
+                print("stoploss was change")
                 
 
         #print(running_positions)
