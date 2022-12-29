@@ -165,7 +165,7 @@ class Trading(User):
         characters = "[]',"
         for x in range(len(characters)):
             string = string.replace(characters[x], "")
-        return string
+        return 
 
     def show_running_p(self):
         running_p = self.lnm.futures_get_positions({
@@ -246,7 +246,6 @@ class Trading(User):
         offer = bid_offer1["offer"]
         return  offer
         
-
 
 
 

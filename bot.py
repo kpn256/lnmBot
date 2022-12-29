@@ -1,32 +1,30 @@
 
-import lnm_class as tr  
+import lnm_class as tr
 import time
-import tradingview_ta 
+import tradingview_ta
 from tradingview_ta import TA_Handler, Interval, Exchange
 
-user = tr.Trading(
-    key="",
-    secret="",
-    passphrase="")
 
-bitcoin = TA_Handler(
+user = tr.Trading(key="ulP4ugL7hIeHjz8ynMn8bcqE08Ve1RM0Cx0ecJvc0Oc=",
+secret="kUnU+0FiCFGpqapCHTvKnRozn6r3Cu09jajol1j3Y7qs574FWlm1m0aZMxhetRWpMlUADQPqBj8a6MV0+y8wsg==",
+passphrase="3h7gdff21646b")
+   
+def bot():
+
+    bitcoin = TA_Handler(
     symbol="XBTUSD",
     screener="crypto",
     exchange="BITMEX",
     interval=Interval.INTERVAL_1_MINUTE,
     )
 
-
-
-def bot():
-
-    
+   
+      
     while True:
-
         analysis = bitcoin.get_analysis()
 
         rsi = analysis.indicators["RSI"]
-    
+
         bollinger_upper = analysis.indicators["BB.upper"]
 
         bollinger_lower = analysis.indicators["BB.lower"]
@@ -38,7 +36,7 @@ def bot():
         bid = user.price_bid()
 
         offer = user.price_offer()
-        
+
         print(f"rsi: {rsi}")
         print(f"BB.lower: {bollinger_lower}")
         print(f"BB.upper: {bollinger_upper}")
@@ -46,11 +44,10 @@ def bot():
         print(f"index: {index}")
         print(f"bid: {bid}")
         print(f"offer: {offer}")
-        
+
+
         # aca ya empezariamos a montar la estrategia segun los datos que obtenemos 
-
         if (rsi >= 70) and (index >= ema20) and (offer >= bollinger_upper):
-
             offer_change_tp = 0.02*offer
 
             offer_change_sl = 0.005*offer
@@ -66,7 +63,7 @@ def bot():
             time.sleep(900)
 
         elif (rsi <= 30) and (index <= ema20) and (bid <= bollinger_lower):
-
+ 
             bid_change_tp = 0.03*bid
 
             bid_change_sl = 0.007*bid
@@ -81,9 +78,10 @@ def bot():
             time.sleep(900)
 
         data = user.show_running_p()
-        running_positions = []
-        
-        for items in data:
+        print(data)
+        #running_positions = []
+
+        '''for items in data:
             sort_dict = {
                     'pid': items['pid'],
                     'side': items['side'],
@@ -91,8 +89,9 @@ def bot():
                     'stoploss': items['stoploss'],
                     'price': items['price']
                     }
+
             running_positions.append(sort_dict)
-            
+
             del sort_dict
 
             if (items['side'] == 'b') and (items['pl'] > (items['margin']/2)):
@@ -113,12 +112,9 @@ def bot():
                     'type': 'stoploss',
                     'value': new_sl
                     })
-                print("stoploss was change")
+                print("stoploss was change")'''
+                
 
-        print(running_positions)
-        print(analysis.time)
+        #print(running_positions)
+        #print(analysis.time) 
         time.sleep(120)
-        
-
-
-

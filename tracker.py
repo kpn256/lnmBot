@@ -4,12 +4,7 @@ from lnmarkets import rest
 import time
 
 
-key = ""
-secret = ""
-passphrase = ""
-options = {'key': f'{key}',
-           'secret': f'{secret}',
-           'passphrase': f'{passphrase}'}
+
 lnm = rest.LNMarketsRest(**options)
 lnm.futures_get_ticker()
 
