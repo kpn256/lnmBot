@@ -4,8 +4,11 @@ import time
 from tradingview_ta import TA_Handler, Interval
 from constants import options
 
+# create a object for use lnm_class
 
 user = tr.Trading(**options)
+
+#create objet fot use tradingview_ta
 
 bitcoin = TA_Handler(
     symbol="XBTUSD",
@@ -16,6 +19,8 @@ bitcoin = TA_Handler(
    
 
 def stoploss_manager(bid, offer):
+
+# this funtion check our positions stop loss and update stoploss
 
     data = user.show_running_p()
     running_positions = []
@@ -59,6 +64,8 @@ def stoploss_manager(bid, offer):
 
 def rsi_strategy():
 
+# this funtion analize rsi and bollinger bands and open positions
+
     while True:
 
         analysis = bitcoin.get_analysis()
@@ -81,6 +88,7 @@ def rsi_strategy():
 
 
         if (rsi >= 70) and (index >= ema20) and (offer >= bollinger_upper):
+            
             offer_change_tp = 0.02*offer
             offer_change_sl = 0.005*offer
             short_tp = offer - offer_change_tp

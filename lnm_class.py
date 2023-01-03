@@ -3,7 +3,8 @@ from curses.ascii import isdigit
 import json
 from lnmarkets import rest
 
-
+# this is te phather class for use lnmarkets rest
+# methods in clss user are under develop
 
 class User(rest.LNMarketsRest):
 
@@ -44,6 +45,8 @@ class User(rest.LNMarketsRest):
 
 class Trading(User):
 
+    # in this clas we create methods for use lnmarkets and sort de resquest
+
     def __init__(self, key, secret, passphrase):
         super().__init__(key, secret, passphrase)
 
@@ -52,6 +55,9 @@ class Trading(User):
         self.entryPrice = ""
 
     def long(self, type, margin, leverage):
+
+    #this method open a market or open long and return sort info using the method response
+
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 'b',
@@ -61,6 +67,9 @@ class Trading(User):
         return self.response(peticion)
 
     def long_tp_sl(self, type, margin, leverage, sl, tp):
+    
+    #this method open a long market or open position with stoploss and take profit
+
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 'b',
@@ -73,6 +82,8 @@ class Trading(User):
 
     def long_sl(self, type, margin, leverage, sl):
 
+    # this method open a long market or open position only with stoploss 
+
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 'b',
@@ -84,6 +95,8 @@ class Trading(User):
 
     def long_tp(self, type, margin, leverage, tp):
 
+    # this method open a long market o open position only with take profit
+
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 'b',
@@ -94,6 +107,8 @@ class Trading(User):
         self.response(peticion)
 
     def Short(self, type, margin, leverage):
+
+    #this method open short market or open position and return sort info using the method response
         
         peticion = self.lnm.futures_new_position({
                 'type': type,
@@ -104,6 +119,9 @@ class Trading(User):
         return self.response(peticion)
 
     def Short_tp_sl(self, type, margin, leverage, sl, tp):
+
+    #this method open a short market or open position with stoploss and take profit
+
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 's',
@@ -115,6 +133,8 @@ class Trading(User):
         return peticion
 
     def close_run_p(self, pid ):
+    
+    # this method close running positions user pid as parametter
     
         close = self.lnm.futures_close_position({
             'pid': pid,
@@ -128,6 +148,8 @@ class Trading(User):
         return response
         
     def close_limit_P(self, pid):
+
+     # this method close running positions user pid as parametter
         
         cancel_p = self.lnm.futures_cancel_position({
             'pid': pid,
@@ -139,10 +161,15 @@ class Trading(User):
         return response
 
     def close_all(self):
+
+     # this method close all positions 
+
         closeP = self.lnm.futures_close_all_positions()
         return closeP
 
     def show_open_p(self):
+
+    # this method show open positions
 
         open_p = self.lnm.futures_get_positions({
                 'type': 'open'
@@ -168,6 +195,9 @@ class Trading(User):
         return 
 
     def show_running_p(self):
+
+    # this method show running positions
+
         running_p = self.lnm.futures_get_positions({
                 'type': 'running'
                 })
@@ -193,7 +223,12 @@ class Trading(User):
         return info_running
 
     def response(self, peticion):
-        # crear un try exept por si la peticion falla PENDIENTE
+
+
+    # this method sort the json of positions petition
+
+    # crear un try exept por si la peticion falla PENDIENTE
+
         info = json.loads(peticion)
         position_info = info["position"]
         pid = position_info["pid"]
@@ -204,7 +239,6 @@ class Trading(User):
         stop_l = position_info['stoploss']
         p_info = (
                 f"position ID: {pid}\n"
-                f"pid: {pid}\n"
                 f"liquidation: {liquidation}\n"
                 f"entry price: {price}\n"
                 f"stoploss: {stop_l}\n"
@@ -213,6 +247,8 @@ class Trading(User):
         return info
 
     def price_index(self):
+
+    # this method make a request for return price index history
 
         index_price = self.lnm.futures_index_history({
             'limit': 2
@@ -225,6 +261,8 @@ class Trading(User):
     
     def price_bid(self):
 
+    # this method make a request for return price bid history
+
         bid_price = self.lnm.futures_bid_offer_history({
             'limit': 2
             })
@@ -236,6 +274,8 @@ class Trading(User):
         return bid 
 
     def price_offer(self):
+
+    # this method make a request for return price bid history
 
         bid_price = self.lnm.futures_bid_offer_history({
             'limit': 2
