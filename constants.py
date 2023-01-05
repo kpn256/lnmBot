@@ -1,4 +1,4 @@
-key = ""
+key = "test"
 secret = ""
 passphrase = ""
 options = {'key': f'{key}',
