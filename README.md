@@ -1,9 +1,11 @@
-# LNBOT
+# LNMBOT
 
-*LNM trading bot was made like exercices and is your responsability use it for trading
+*LNMBOT was made like exercices and is your responsability use it for trading,
 do not use this bot whitout supervision*
 
-for running this bot you need python 3.8 or superior
+this is a trading bot using lnmarkets 
+
+for running this bot you need python 3.10 or superior
 
 #### -   clone this repository 
 
@@ -21,11 +23,11 @@ for running this bot you need python 3.8 or superior
    
  -  **activate virtual enviorment**
  
- linux
-   `source venv/bin/activate`
+  linux
+    `source venv/bin/activate`
    
- windows
- `source venv/script/activate`
+  windows
+    `source venv/script/activate`
    
    
  - **install requirements**
@@ -44,4 +46,4 @@ and run the module **main.py**  for start operation
 **windows**
 `py main.py`
 
-the parameters of operation you can change it in the **bot.py** module .
+you can change the parameters of operation in the **bot.py** module .

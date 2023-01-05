@@ -8,7 +8,7 @@ from constants import options
 
 user = tr.Trading(**options)
 
-#create objet fot use tradingview_ta
+#create objet for use tradingview_ta
 
 bitcoin = TA_Handler(
     symbol="XBTUSD",
@@ -26,14 +26,16 @@ def stoploss_manager(bid, offer):
     running_positions = []
 
     for items in data:
-
+        
         sort_dict = {
             'pid': items['pid'],
             'side': items['side'],
             'liquidation': items['liquidation'],
             'stoploss': items['stoploss'],
-            'price': items['price']
+            'price': items['price'],
+            'pl': items['pl']
             }
+
         running_positions.append(sort_dict)
         del sort_dict
 
@@ -60,7 +62,26 @@ def stoploss_manager(bid, offer):
                 })
             print("stoploss was change")
 
-        return running_positions
+    return running_positions
+
+def recomendations():
+
+    # this funtion compare ema20 and ema50 recomendation and return a solid recomendation
+
+    analysis = bitcoin.get_analysis()
+    recomendation = analysis.moving_averages['COMPUTE']
+    ema20_recom = recomendation['EMA20']
+    ema50_recom = recomendation['EMA50']
+
+    if ema20_recom == 'SELL' and ema50_recom == 'SELL':
+        return 'SELL'
+
+    elif ema20_recom == 'BUY' and ema50_recom == 'BUY':
+        return 'BUY'
+
+    else:
+        return 'NEUTRAL'
+
 
 def rsi_strategy():
 
@@ -69,10 +90,10 @@ def rsi_strategy():
     while True:
 
         analysis = bitcoin.get_analysis()
-        rsi = analysis.indicators["RSI"]
-        bollinger_upper = analysis.indicators["BB.upper"]
-        bollinger_lower = analysis.indicators["BB.lower"]
-        ema20 = analysis.indicators["EMA20"]
+        rsi = round(analysis.indicators["RSI"], 2)
+        bollinger_upper = round(analysis.indicators["BB.upper"], 2)
+        bollinger_lower = round(analysis.indicators["BB.lower"], 2)
+        ema20 = round(analysis.indicators["EMA20"], 2)
         index = user.price_index()
         bid = user.price_bid()
         offer = user.price_offer()
@@ -84,10 +105,11 @@ def rsi_strategy():
         print(f"index: {index}")
         print(f"bid: {bid}")
         print(f"offer: {offer}")
-        print(analysis.time) 
+        print(analysis.time)
+        print(recomendations()) 
 
 
-        if (rsi >= 70) and (index >= ema20) and (offer >= bollinger_upper):
+        if (rsi >= 70) and (index >= ema20) and (offer >= bollinger_upper) and (recomendations() == 'SELL'):
             
             offer_change_tp = 0.02*offer
             offer_change_sl = 0.005*offer
@@ -99,7 +121,7 @@ def rsi_strategy():
 
             time.sleep(900)
 
-        elif (rsi <= 30) and (index <= ema20) and (bid <= bollinger_lower):
+        elif (rsi <= 30) and (index <= ema20) and (bid <= bollinger_lower) and (recomendations() == 'BUY'):
  
             bid_change_tp = 0.03*bid
             bid_change_sl = 0.007*bid

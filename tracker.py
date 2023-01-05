@@ -34,4 +34,3 @@ def price_scrapper():
         
         time.sleep(120)
 '''
-
